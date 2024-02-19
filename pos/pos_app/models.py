@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.db import models, transaction
 from django.contrib.auth.models import *
 from django.contrib.auth.hashers import make_password
@@ -7,6 +8,12 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
+class User(AbstractUser):
+    owner = models.ForeignKey('pos_app.Owner', on_delete=models.CASCADE, related_name='user_owner', blank=True, null=True)
+    business_id = models.IntegerField(blank=True, null=True)
+
+    class Meta(AbstractUser.Meta):
+        swappable = 'AUTH_USER_MODEL'
 class Brand(models.Model):
     business_id = models.ForeignKey('business', on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
@@ -109,7 +116,7 @@ class CustomUser(models.Model):
         ('Owner', 'Owner'),
         ('Business', 'Business'),
     )
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     user_type = models.CharField(max_length=20, choices=USER_TYPES, default='Business')
     phone = models.CharField(max_length=15, blank=True, null=True)
     whatsapp = models.CharField(max_length=15, blank=True, null=True)
