@@ -9,11 +9,14 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 class User(AbstractUser):
-    owner = models.ForeignKey('pos_app.Owner', on_delete=models.CASCADE, related_name='user_owner', blank=True, null=True)
+    owner = models.ForeignKey('pos_app.Owner', on_delete=models.CASCADE, related_name='users', blank=True, null=True)
     business_id = models.IntegerField(blank=True, null=True)
+   
 
     class Meta(AbstractUser.Meta):
-        swappable = 'AUTH_USER_MODEL'
+        swappable = "AUTH_USER_MODEL"
+
+
 class Brand(models.Model):
     business_id = models.ForeignKey('business', on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
