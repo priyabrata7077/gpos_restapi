@@ -251,6 +251,7 @@ class Item(models.Model):
     itemcompany = models.ForeignKey(Company,on_delete=models.CASCADE,blank=True, null=True,)
     Attributes= models.ForeignKey(Attribute,on_delete=models.CASCADE,blank=True, null=True,)
     Attributes_options= models.ForeignKey(Attribute_options,on_delete=models.CASCADE,blank=True, null=True,)
+    itemsalerate=models.ForeignKey(StockRegister,on_delete=models.CASCADE,blank=True,null=True)
     def __str__(self):
         return self.itemname
 class SalesPending(models.Model):
